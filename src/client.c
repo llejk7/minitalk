@@ -3,54 +3,60 @@
 /*                                                        :::      ::::::::   */
 /*   client.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: krenken <krenken@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kjell <kjell@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 17:40:05 by krenken           #+#    #+#             */
-/*   Updated: 2024/12/19 20:11:05 by krenken          ###   ########.fr       */
+/*   Updated: 2024/12/29 01:03:07 by kjell            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Libft/inc/libft.h"
-#include "Libft/inc/ft_printf.h"
-#include <signal.h>
-#include <stdio.h>
-#include <string.h>
+#include "minitalk.h"
 
-void	send_signal(int pid, unsigned char character)
+void	send_bit(int pid, int bit)
+{
+	if (kill(pid, bit ? SIGUSR1 : SIGUSR2) == -1)
+	{
+		ft_printf("Error: Failed to send signal\n");
+		exit(EXIT_FAILURE);
+	}
+	usleep(SIGNAL_DELAY_US);
+}
+
+void	send_signal(int pid, const char *message)
 {
 	int				i;
-	unsigned char	temp_char;
+	unsigned char	character;
 
-	i = 8;
-	temp_char = character;
-	while (i > 0)
+	while (*message)
 	{
-		i--;
-		temp_char = character >> i;
-		if (temp_char % 2 == 0)
-			kill(pid, SIGUSR2);
-		else
-			kill(pid, SIGUSR1);
-		usleep(42);
+		character = *message++;
+		i = 8;
+		while (i--)
+			send_bit(pid, (character >> i) & 1);
 	}
+	// Send null-terminator
+	i = 8;
+	while (i--)
+		send_bit(pid, 0);
 }
 
 int	main(int argc, char **argv)
 {
 	pid_t		server_pid;
 	const char	*message;
-	int			i;
 
 	if (argc != 3)
 	{
 		ft_printf("Usage: %s <server_pid> <message>\n", argv[0]);
-		exit (0);
+		return (EXIT_FAILURE);
 	}
 	server_pid = ft_atoi(argv[1]);
+	if (server_pid <= 0)
+	{
+		ft_printf("Error: Invalid server PID\n");
+		return (EXIT_FAILURE);
+	}
 	message = argv[2];
-	i = 0;
-	while (message[i])
-		send_signal(server_pid, message[i++]);
-	send_signal(server_pid, '\0');
-	return (0);
+	send_signal(server_pid, message);
+	return (EXIT_SUCCESS);
 }
