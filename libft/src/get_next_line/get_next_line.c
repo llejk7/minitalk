@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kjell <kjell@student.42.fr>                +#+  +:+       +#+        */
+/*   By: krenken <krenken@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/27 11:24:53 by krenken           #+#    #+#             */
-/*   Updated: 2024/12/28 15:23:59 by kjell            ###   ########.fr       */
+/*   Updated: 2025/01/04 17:11:25 by krenken          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ char	*update_stash(char *stash)
 		free(stash);
 		return (NULL);
 	}
-	new_stash = (char *)malloc(gnl_strlen(stash) - i + 1);
+	new_stash = (char *)malloc(nl_strlen(stash) - i + 1);
 	if (!new_stash)
 		return (NULL);
 	i++;

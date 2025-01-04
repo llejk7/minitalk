@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kjell <kjell@student.42.fr>                +#+  +:+       +#+        */
+/*   By: krenken <krenken@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/27 11:25:15 by krenken           #+#    #+#             */
-/*   Updated: 2024/12/28 15:26:41 by kjell            ###   ########.fr       */
+/*   Updated: 2025/01/04 17:11:17 by krenken          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 #include "../../inc/libft.h"
 
-size_t	gnl_strlen(const char	*str)
+size_t	nl_strlen(const char	*str)
 {
 	size_t	i;
 
@@ -52,7 +52,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 		return (ft_strdup(s2));
 	else if (!s2)
 		return (ft_strdup(s1));
-	new_str = (char *)malloc(gnl_strlen((char *)s1) + gnl_strlen((char *)s2) + 1);
+	new_str = (char *)malloc(nl_strlen((char *)s1) + nl_strlen((char *)s2) + 1);
 	if (!new_str)
 		return (NULL);
 	while (s1[i] != '\0')

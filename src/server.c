@@ -3,15 +3,27 @@
 /*                                                        :::      ::::::::   */
 /*   server.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kjell <kjell@student.42.fr>                +#+  +:+       +#+        */
+/*   By: krenken <krenken@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/19 17:40:13 by krenken           #+#    #+#             */
-/*   Updated: 2024/12/29 01:03:02 by kjell            ###   ########.fr       */
+/*   Created: 2025/01/04 17:27:19 by krenken           #+#    #+#             */
+/*   Updated: 2025/01/04 17:27:23 by krenken          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
+/*
+ * Function: handle_signal
+ * -----------------------
+ * Handles incoming signals (SIGUSR1 or SIGUSR2) to reconstruct a message sent 
+ * by the client. Each signal corresponds to a single bit of the message.
+ *
+ * signal: The signal received (SIGUSR1 represents 1, SIGUSR2 represents 0).
+ *
+ * The function builds characters bit-by-bit and prints them to the standard
+ * output. When a null character ('\0') is fully received, it prints a newline
+ * to indicate the end of a message.
+ */
 void	handle_signal(int signal)
 {
 	static unsigned char	current_char = 0;
@@ -36,6 +48,17 @@ void	handle_signal(int signal)
 		ft_printf("Error: Unexpected signal received\n");
 }
 
+/*
+ * Function: main
+ * --------------
+ * Entry point for the server program. It initializes the signal handlers for 
+ * SIGUSR1 and SIGUSR2 and prints the server's PID to the standard output.
+ *
+ * The server continuously waits for incoming signals, processing each one to
+ * reconstruct and display the message sent by the client.
+ *
+ * Returns EXIT_SUCCESS when terminated (normally unreachable).
+ */
 int	main(void)
 {
 	ft_printf("Server PID: %d\n", getpid());
